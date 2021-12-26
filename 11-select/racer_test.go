@@ -24,9 +24,8 @@ func TestRacer(t *testing.T) {
 		assertStrings(t, got, want)
 	})
 
-	t.Run("return an error after 10 seconds", func(t *testing.T) {
-		server := makeTestServer(25 * time.Millisecond)
-
+	t.Run("return an error by timeout", func(t *testing.T) {
+		server := makeTestServer(20 * time.Millisecond)
 		defer server.Close()
 
 		_, err := Racer(server.URL, server.URL, 10*time.Millisecond)
