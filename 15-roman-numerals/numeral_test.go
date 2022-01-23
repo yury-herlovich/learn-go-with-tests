@@ -5,11 +5,11 @@ import (
 	"testing"
 )
 
-func TestRomanNumerals(t *testing.T) {
-	cases := []struct {
+var (
+	cases = []struct {
 		// Description string
 		Arabic int
-		Want   string
+		Roman  string
 	}{
 		{1, "I"},
 		{2, "II"},
@@ -41,11 +41,22 @@ func TestRomanNumerals(t *testing.T) {
 		{1006, "MVI"},
 		{798, "DCCXCVIII"},
 	}
+)
 
+func TestRomanNumerals(t *testing.T) {
 	for _, test := range cases {
-		t.Run(fmt.Sprintf("convert %d to %s", test.Arabic, test.Want), func(t *testing.T) {
+		t.Run(fmt.Sprintf("convert %d to %s", test.Arabic, test.Roman), func(t *testing.T) {
 			got := ConvertToRoman(test.Arabic)
-			assertStrings(t, got, test.Want)
+			assertStrings(t, got, test.Roman)
+		})
+	}
+}
+
+func TestConvertToArabic(t *testing.T) {
+	for _, test := range cases {
+		t.Run(fmt.Sprintf("convert %s to %d", test.Roman, test.Arabic), func(t *testing.T) {
+			got := ConvertToArabic(test.Roman)
+			assertInt(t, got, test.Arabic)
 		})
 	}
 }
@@ -55,5 +66,13 @@ func assertStrings(t testing.TB, got, want string) {
 
 	if got != want {
 		t.Errorf("expected %q but got %q", want, got)
+	}
+}
+
+func assertInt(t testing.TB, got, want int) {
+	t.Helper()
+
+	if got != want {
+		t.Errorf("expected %d but got %d", want, got)
 	}
 }
